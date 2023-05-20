@@ -1,0 +1,28 @@
+diff --git a/Runtime/Passes/PostProcessPass.cs b/Runtime/Passes/PostProcessPass.cs
+index 7acb9c1..af07325 100644
+--- a/Runtime/Passes/PostProcessPass.cs
++++ b/Runtime/Passes/PostProcessPass.cs
+@@ -275,10 +301,22 @@ namespace UnityEngine.Rendering.Universal.Internal
+ 
+             m_ResetHistory = false;
+         }
+-
++
+         RenderTextureDescriptor GetCompatibleDescriptor()
+             => GetCompatibleDescriptor(m_Descriptor.width, m_Descriptor.height, m_Descriptor.graphicsFormat);
+ 
++        RenderTextureDescriptor GetUAVCompatibleDescriptor(int width, int height)
++        {
++            var desc = m_Descriptor;
++            desc.depthBufferBits = 0;
++            desc.msaaSamples = 1;
++            desc.width = width;
++            desc.height = height;
++            desc.enableRandomWrite = true;
++            return desc;
++        }
++
++
+         RenderTextureDescriptor GetCompatibleDescriptor(int width, int height, GraphicsFormat format, int depthBufferBits = 0)
+         {
+             var desc = m_Descriptor;
